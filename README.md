@@ -1,59 +1,95 @@
-# Customer Attrition Modeling and Business Strategy
+# Customer Attrition Modeling and Retention Strategy
 
-**Author:** Shloke Binani
+**Author:** Shloke Binani | Academic project
 
-## Project Overview
-This project explores the Telco Customer Churn dataset to understand churn behavior and build an analytical model to predict customer retention. It involves data cleaning, interactive dashboarding, and machine learning classification using the Random Forest algorithm to help businesses achieve a sustainable competitive advantage.
 
-## Tools and Technologies
-* **SQL Server:** Data cleaning and preprocessing
-* **Power BI:** Interactive dashboards and presentations
-* **Python (Jupyter Notebook):** Machine learning (Random Forest), feature analysis, and evaluation
-* **Libraries:** pandas, matplotlib, seaborn, scikit-learn
+## Overview
+This project analyzes the public [Telco Customer Churn dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn) (7,043 customers, 21 features) to find out who churns and why, tests whether the patterns are statistically real, and trains a Random Forest model to flag at-risk customers. Findings are summarized in a Power BI dashboard and turned into retention recommendations.
 
-## Dataset and Methodology
-To identify drivers of customer attrition and help the business achieve a sustainable competitive advantage, I managed a complete analytical pipeline from data preparation to predictive modeling. I executed data cleaning protocols using SQL to ensure zero defect analysis by formatting account variables and handling missing values. To structure the communication of insights logically, I developed an interactive Power BI dashboard which revealed that fiber optic users experienced a peak 42 percent churn rate. Finally, I generated hypotheses and programmed a Random Forest analytical model in Python that predicted customer departure with an 80 percent accuracy, successfully translating raw data into meaningful insights for targeted retention campaigns.
+**Headline results**
+- 26.5% of customers churned (1,869 of 7,043).
+- Month-to-month customers churn at 43%, against 3% on two-year contracts.
+- The Random Forest reaches 0.83 ROC AUC and 80% accuracy on a held-out 20% test set. Predicting "no churn" for everyone scores 73.5%, so accuracy alone is a weak measure here.
+- The top 20% of customers by risk score contain about 50% of all churners (2.5x lift).
 
-## Model Evaluation
+## Tools
+Python (pandas, scikit-learn, SciPy, matplotlib, seaborn), Power BI
 
-| Metric | Class 0 (Retained) | Class 1 (Churned) |
+## Repository contents
+| File | Purpose |
+| :--- | :--- |
+| `CUSTOMER ATTRITION _final.ipynb` | Analysis, hypothesis tests, model, scenario analysis |
+| `Customer-Churn_Telco_Clean.csv` | Cleaned dataset used by the notebook and dashboard |
+| `churn_dashboard.pbix` | Power BI dashboard (screenshot above) |
+| `requirements.txt` | Python dependencies |
+
+## Key findings
+| Segment | Churn rate |
+| :--- | :--- |
+| Month-to-month contract | 43% |
+| One-year contract | 11% |
+| Two-year contract | 3% |
+| Fiber optic internet | 42% |
+| DSL internet | 19% |
+| No internet service | 7% |
+| Electronic check payment | 45% |
+| Other payment methods | 15% to 19% |
+| Senior citizens | 42% |
+| Non-senior customers | 24% |
+| Gender (female / male) | 26.9% / 26.2% |
+
+- Churned customers stayed 18 months on average; retained customers stayed 38.
+- Lifetime value (monthly charge x tenure) averages $1,532 for churned customers and $2,550 for retained customers.
+- Internet service and contract type vary LTV the most. Gender has no measurable effect.
+
+## Hypothesis tests (alpha = 0.05)
+Null hypothesis: churn is independent of the variable. Chi-square tests of independence, with Cramer's V as effect size.
+
+| Variable | p-value | Cramer's V | Decision |
+| :--- | :--- | :--- | :--- |
+| Contract | < 0.001 | 0.41 | Reject H0 |
+| Internet service | < 0.001 | 0.32 | Reject H0 |
+| Payment method | < 0.001 | 0.30 | Reject H0 |
+| Senior citizen | < 0.001 | 0.15 | Reject H0 |
+| Gender | 0.49 | 0.01 | Fail to reject H0 |
+
+Welch t-tests: churned customers have significantly lower tenure (18.0 vs 37.6 months, p < 0.001) and higher monthly charges ($74.44 vs $61.27, p < 0.001).
+
+## Model evaluation
+Random Forest (100 trees), 80/20 train-test split, `random_state=42`.
+
+| Metric | Retained | Churned |
 | :--- | :--- | :--- |
-| Precision | 83% | 67% |
-| Recall | 92% | 46% |
-| F1 Score | 87% | 55% |
+| Precision | 0.82 | 0.67 |
+| Recall | 0.92 | 0.46 |
+| F1 | 0.87 | 0.54 |
 
-**Overall Accuracy:** 80%
+- Accuracy: 79.6% (baseline 73.5%). ROC AUC: 0.833 (5-fold cross-validated AUC: 0.82).
+- Top 10% of risk scores: 76% churned (2.9x lift). Top 20%: 66% churned, capturing 50% of all churners.
+- The model finds fewer than half of churners at the default 0.5 threshold, so it is better used to rank customers by risk than to make yes/no calls.
 
-## Key Insights from Research Questions
-1. Churned customers stay for an average of 18 months, while retained customers stay around 38 months, indicating longer tenured customers are less likely to churn.
-2. Fiber optic users show the highest churn rate at approximately 42 percent, while DSL users churn moderately at 20 percent and customers without internet service churn the least at 6 percent.
-3. Month to month contract users churn the most at 45 percent, whereas one year contract users drop to 12 percent and two year contract users are more loyal at 2 percent, proving long term contracts reduce churn.
-4. Retained customers have significantly higher Lifetime Value (LTV) than churned ones, indicating that churned users generate less revenue over time.
-5. Internet Service and Contract Type had the strongest influence on LTV, while Gender had a negligible impact.
+## Scenario analysis
+These scenarios rest on stated assumptions and are observational, not causal estimates.
 
-## Business Insights and Recommendations
-Based on the analysis of churn behavior, tenure, contract types, and LTV, here are key insights and actions the business can take to reduce customer churn:
+1. **Contract migration.** If 10% / 20% / 30% of month-to-month customers moved to one-year contracts and then churned like current one-year customers, about 122 / 244 / 365 fewer customers would churn, protecting roughly $97K / $194K / $291K of annual revenue.
+2. **Targeted outreach.** Contacting the top 20% of risk scores on the test set reaches 185 actual churners. If an offer saves 10% / 20% / 30% of them, that keeps 18 / 37 / 56 customers, about $17K / $35K / $52K of annual revenue.
 
-**1. Encourage Long Term Contracts**
-* **Insight:** Customers on month to month plans have the highest churn (45%), while two year contracts have the lowest (2%).
-* **Recommendation:** Offer loyalty rewards, discounts, or perks to encourage longer contract commitments.
+## Recommendations
+1. **Encourage longer contracts.** Month-to-month churn is 43% against 3% for two-year plans, so offer discounts or perks for committing.
+2. **Investigate fiber optic.** It has the highest churn (42%); review pricing and service quality for this segment.
+3. **Focus on the first 18 months.** Churned customers leave after 18 months on average, so strengthen onboarding and first-year incentives.
+4. **Review electronic check customers.** They churn at 45%; nudging them to automatic payment is worth testing.
+5. **Prioritize outreach by risk score.** Use the model to rank customers and contact the highest-risk 20% first.
+6. **Offer technical support plans** and flag high-risk accounts for proactive contact.
 
-**2. Improve Experience for Fiber Optic Users**
-* **Insight:** Fiber optic users show the highest churn (42%) among all internet service types.
-* **Recommendation:** Investigate pricing or service quality concerns and offer customized plans or customer support.
+## Limitations
+- Single train-test split with no hyperparameter tuning; churner recall is 46% at the default threshold.
+- LTV is a simple proxy (monthly charge x tenure), not a forecast of future revenue.
+- The scenario estimates assume customers who switch contracts behave like existing customers on those contracts.
+- The dataset is a public benchmark, not a live business, so no recommendation was tested in practice.
 
-**3. Strengthen Early Customer Engagement**
-* **Insight:** Churned customers typically leave within the first 18 months.
-* **Recommendation:** Focus on onboarding, regular engagement, and first year incentives to retain new customers.
-
-**4. Boost Lifetime Value Through Segmentation**
-* **Insight:** Contract type and Internet Service significantly affect LTV, while features like gender have little impact.
-* **Recommendation:** Use segmentation and upselling strategies to improve LTV among low value customers.
-
-**5. Offer Proactive Technical Support**
-* **Insight:** Better service support is linked to higher tenure and retention.
-* **Recommendation:** Introduce tech support plans and flag high risk accounts for proactive outreach.
-
-**6. Leverage Machine Learning for Early Churn Prediction**
-* **Insight:** The Random Forest model predicts churn with 80% accuracy.
-* **Recommendation:** Use the model to trigger retention campaigns before customers decide to leave.
+## How to run
+```
+pip install -r requirements.txt
+jupyter notebook "CUSTOMER ATTRITION _final.ipynb"
+```
