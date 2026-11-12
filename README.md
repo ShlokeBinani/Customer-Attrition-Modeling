@@ -20,7 +20,7 @@ Python (pandas, scikit-learn, SciPy, matplotlib, seaborn), Power BI
 | :--- | :--- |
 | `CUSTOMER ATTRITION _final.ipynb` | Analysis, hypothesis tests, model, scenario analysis |
 | `Customer-Churn_Telco_Clean.csv` | Cleaned dataset used by the notebook and dashboard |
-| `churn_dashboard.pbix` | Power BI dashboard (screenshot above) |
+| `CMABS.pbix` | Power BI dashboard |
 | `requirements.txt` | Python dependencies |
 
 ## Key findings
