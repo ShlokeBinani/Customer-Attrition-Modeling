@@ -2,8 +2,6 @@
 
 **Author:** Shloke Binani | Academic project
 
-![Power BI dashboard](images/dashboard.png)
-
 ## Overview
 This project analyzes the public [Telco Customer Churn dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn) (7,043 customers, 21 features) to find out who churns and why, tests whether the patterns are statistically real, and trains a Random Forest model to flag at-risk customers. Findings are summarized in a Power BI dashboard and turned into retention recommendations.
 
@@ -21,7 +19,7 @@ Python (pandas, scikit-learn, SciPy, matplotlib, seaborn), Power BI
 | :--- | :--- |
 | `CUSTOMER ATTRITION _final.ipynb` | Analysis, hypothesis tests, model, scenario analysis |
 | `Customer-Churn_Telco_Clean.csv` | Cleaned dataset used by the notebook and dashboard |
-| `churn_dashboard.pbix` | Power BI dashboard (screenshot above) |
+| `CMABS.pbix` | Power BI dashboard (screenshot above) |
 | `requirements.txt` | Python dependencies |
 
 ## Key findings
