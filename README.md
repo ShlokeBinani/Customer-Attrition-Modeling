@@ -2,6 +2,7 @@
 
 **Author:** Shloke Binani | Academic project
 
+![Power BI dashboard](images/dashboard.png)
 
 ## Overview
 This project analyzes the public [Telco Customer Churn dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn) (7,043 customers, 21 features) to find out who churns and why, tests whether the patterns are statistically real, and trains a Random Forest model to flag at-risk customers. Findings are summarized in a Power BI dashboard and turned into retention recommendations.
@@ -20,7 +21,7 @@ Python (pandas, scikit-learn, SciPy, matplotlib, seaborn), Power BI
 | :--- | :--- |
 | `CUSTOMER ATTRITION _final.ipynb` | Analysis, hypothesis tests, model, scenario analysis |
 | `Customer-Churn_Telco_Clean.csv` | Cleaned dataset used by the notebook and dashboard |
-| `CMABS.pbix` | Power BI dashboard |
+| `churn_dashboard.pbix` | Power BI dashboard (screenshot above) |
 | `requirements.txt` | Python dependencies |
 
 ## Key findings
@@ -39,7 +40,7 @@ Python (pandas, scikit-learn, SciPy, matplotlib, seaborn), Power BI
 | Gender (female / male) | 26.9% / 26.2% |
 
 - Churned customers stayed 18 months on average; retained customers stayed 38.
-- Lifetime value (monthly charge x tenure) averages $1,532 for churned customers and $2,550 for retained customers.
+- Lifetime value (monthly charge x tenure) averages USD 1,532 for churned customers and USD 2,550 for retained customers.
 - Internet service and contract type vary LTV the most. Gender has no measurable effect.
 
 ## Hypothesis tests (alpha = 0.05)
@@ -53,7 +54,7 @@ Null hypothesis: churn is independent of the variable. Chi-square tests of indep
 | Senior citizen | < 0.001 | 0.15 | Reject H0 |
 | Gender | 0.49 | 0.01 | Fail to reject H0 |
 
-Welch t-tests: churned customers have significantly lower tenure (18.0 vs 37.6 months, p < 0.001) and higher monthly charges ($74.44 vs $61.27, p < 0.001).
+Welch t-tests: churned customers have significantly lower tenure (18.0 vs 37.6 months, p < 0.001) and higher monthly charges (USD 74.44 vs USD 61.27, p < 0.001).
 
 ## Model evaluation
 Random Forest (100 trees), 80/20 train-test split, `random_state=42`.
@@ -71,8 +72,8 @@ Random Forest (100 trees), 80/20 train-test split, `random_state=42`.
 ## Scenario analysis
 These scenarios rest on stated assumptions and are observational, not causal estimates.
 
-1. **Contract migration.** If 10% / 20% / 30% of month-to-month customers moved to one-year contracts and then churned like current one-year customers, about 122 / 244 / 365 fewer customers would churn, protecting roughly $97K / $194K / $291K of annual revenue.
-2. **Targeted outreach.** Contacting the top 20% of risk scores on the test set reaches 185 actual churners. If an offer saves 10% / 20% / 30% of them, that keeps 18 / 37 / 56 customers, about $17K / $35K / $52K of annual revenue.
+1. **Contract migration.** If 10% / 20% / 30% of month-to-month customers moved to one-year contracts and then churned like current one-year customers, about 122 / 244 / 365 fewer customers would churn, protecting roughly USD 97K / USD 194K / USD 291K of annual revenue.
+2. **Targeted outreach.** Contacting the top 20% of risk scores on the test set reaches 185 actual churners. If an offer saves 10% / 20% / 30% of them, that keeps 18 / 37 / 56 customers, about USD 17K / USD 35K / USD 52K of annual revenue.
 
 ## Recommendations
 1. **Encourage longer contracts.** Month-to-month churn is 43% against 3% for two-year plans, so offer discounts or perks for committing.
